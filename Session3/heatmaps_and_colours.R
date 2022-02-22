@@ -5,7 +5,7 @@ library(RColorBrewer)
 
 # LOAD and prepare data from files ####
 # we first make a list of filenames of interest using the list.files() function
-filenames = list.files(path = "Session5/data/", pattern = "counts.txt", full.names = TRUE)
+filenames = list.files(path = "Session3/data/", pattern = "counts.txt", full.names = TRUE)
 
 # we then use lapply(), which is similar to a for() loop
 # to read the tab separated table of count data
@@ -27,7 +27,7 @@ View(norm_counts)
 conditions = as.factor(substr(colnames(norm_counts)[2:7], 1, 1))
 
 # load results table
-results = read.csv("Session5/data/differentially_expressed_mirs_significant.csv", stringsAsFactors = FALSE)
+results = read.csv("Session3/data/differentially_expressed_mirs_significant.csv", stringsAsFactors = FALSE)
 # COLOURS ####
 # Print available palettes
 display.brewer.all()

@@ -15,7 +15,7 @@ library(tidyverse)
 #                      header = TRUE, stringsAsFactors = FALSE)
 
 # OR load the csv file that is in your Session3/data folder
-owid_covid = read.csv("Session3/data/owid-covid-data.csv", header = TRUE,
+owid_covid = read.csv("Session1/data/owid-covid-data.csv", header = TRUE,
                       stringsAsFactors = FALSE)
 
 

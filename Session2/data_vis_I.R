@@ -4,7 +4,7 @@ library(tidyverse)
 # library(dplyr) # if tidyverse not loaded
 # library(ggplot2) # if tidyverse not loaded
 # LOAD Our World In Data Covid dataset ####
-owid_covid = read.csv("Session3/data/owid-covid-data.csv", header = TRUE,
+owid_covid = read.csv("Session1/data/owid-covid-data.csv", header = TRUE,
                       stringsAsFactors = FALSE)
 owid_covid$date = as.Date(owid_covid$date)
 
@@ -176,11 +176,11 @@ plot_total_cases_vs_deaths = ggplot(owid_covid_newyear, aes(x = total_cases, y =
 print(plot_total_cases_vs_deaths)
 # 12 - save the plot to file
 ggsave()
-ggsave("session4/results/plot_total_cases_vs_deaths.pdf", 
+ggsave("session2/results/plot_total_cases_vs_deaths.pdf", 
        plot = plot_total_cases_vs_deaths, width = 20, height = 5)
-ggsave("session4/results/plot_total_cases_vs_deaths.png", 
+ggsave("session2/results/plot_total_cases_vs_deaths.png", 
        plot = plot_total_cases_vs_deaths)
-ggsave("session4/results/plot_total_cases_vs_deaths.svg", 
+ggsave("session2/results/plot_total_cases_vs_deaths.svg", 
        plot = plot_total_cases_vs_deaths)
 
 
