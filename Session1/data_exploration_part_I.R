@@ -131,3 +131,17 @@ plot(x =                    , y =                 )
 # plot the same data in log10 scale
 plot(x = log10(                               ), 
      y = log10(                               ), xlim = c(0, 4))
+
+#### loop functions ####
+# split() to separate every country data
+owid_covid_split = split(owid_covid, owid_covid$location)
+# Q: what is the data structure of owid_covid_split?
+
+# peak deaths for each country
+lapply(owid_covid_split, function(x) {
+  max(x[["new_deaths"]])
+})
+
+# Q: Why are we getting so many NAs? How can we fix this?
+
+# use sapply() for the above
