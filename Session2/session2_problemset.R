@@ -8,7 +8,7 @@
 # on the y axis in black and also icu_patients_per_million in red on the y axis
 # Please see session4/results/plot_faceted_4countries_date_vs_deaths_and_icu.pdf for the expected output
 
-# Q3: (Advanced) Recreate the plot from session4/results/plot_bubble_total_cases_vs_deaths.pdf from
+# Q3: (Advanced) Recreate the plot from Session2/results/plot_bubble_total_cases_vs_deaths.pdf from
 # the owid_covid_newyear dataset
 # use shape = 21 for geom_point()
 # hint: use geom_label_repel() from ggrepel package
