@@ -1,6 +1,7 @@
 ###R for biologists
 ##Irina & Rao, 02/03/2022
 library(tidyverse)
+####Loading data####
 #Import the all sheets from Excel file provided (use readxl)
 library(readxl)
 ifny <- read_excel("Session2/data/MSD_data.xlsx", sheet = 'IFNy')
@@ -28,21 +29,15 @@ cyto %>% filter(across(c(-ID,-Randomisation),~ .x>0|is.na(.x)==TRUE)) -> cyto
 #Convert groups into factors
 cyto$Randomisation <- as.factor(cyto$Randomisation)
 levels(cyto$Randomisation)
-c(1,2)
+c(1,2) #note the difference
 levels(cyto$Randomisation)<-c("ChAdOx1", "Control")
-#install.packages("data.table")
-library(data.table)
-#Wide to long format
-#library(reshape2)
-#cyto_melted<-melt(cyto,id.vars=c("ID","Randomisation"))
-#reshape(cyto,idvar = c("ID","Randomisation"),direction = "long")
 
-#Stick with gather from tidyr
+#Wide to long format
+#Use gather from tidyr
 cyto_melted<-gather(cyto,key="variable",value = "value",-ID,-Randomisation)
 cyto_melted<-na.omit(cyto_melted)
-#cyto2<-na.omit(cyto)
-#library(reshape2)
 
+####Plotting
 library(ggplot2)
 #Barplot
 ggplot(cyto_melted, aes(fill=Randomisation, y=value, x=variable)) + 
@@ -99,8 +94,8 @@ ggplot(cyto_melted, aes(fill=Randomisation, y=log(value), x=variable)) +
   theme_bw() +
   theme(legend.position = "none")+
   facet_wrap(~Randomisation)
-##########################
-#####End of session 4#####
+
+####Adding stat####
 #Dotplot + means
 ggplot(cyto_melted, aes(fill=Randomisation, y=log(value), x=variable))+
   geom_dotplot(binaxis = "y", stackdir = "center",
