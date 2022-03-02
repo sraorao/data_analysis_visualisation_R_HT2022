@@ -37,7 +37,7 @@ levels(cyto$Randomisation)<-c("ChAdOx1", "Control")
 cyto_melted<-gather(cyto,key="variable",value = "value",-ID,-Randomisation)
 cyto_melted<-na.omit(cyto_melted)
 
-####Plotting
+####Plotting####
 library(ggplot2)
 #Barplot
 ggplot(cyto_melted, aes(fill=Randomisation, y=value, x=variable)) + 
