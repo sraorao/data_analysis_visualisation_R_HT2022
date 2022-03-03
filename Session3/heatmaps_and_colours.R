@@ -11,13 +11,17 @@ filenames = list.files(path = "Session3/data", pattern = "counts.txt", full.name
 # to read the tab separated table of count data
 # so that we get a list of data.frames in count_data_list
 count_data_list = lapply(filenames, function(x) {
-                    sample_name = substr(x, 15, 16) # change this to get sample names using regular expression with sub()
+                    sample_name = substr(x, 15, 16)
                     each_sample_count = read.table(x, header = TRUE, sep = "\t", stringsAsFactors = FALSE,
                                                    col.names = c("mir_name", sample_name))
                     return(each_sample_count)
                   })
 head(count_data_list[[1]])
 str(count_data_list)
+
+# Optional exercise
+# Use the sub() function and regular expressions to extract the sample names (e1, m1, etc.) from the filenames
+
 
 # we then merge all the dataframes recursively using Reduce
 norm_counts = Reduce(function(x, y) {merge(x, y, by = "mir_name")}, count_data_list)
@@ -86,21 +90,40 @@ norm_counts %>%
     theme_bw() -> p                                           # set theme to B & W
 p
 
-# Plot barplot for miR-21
-norm_counts %>%
-  gather(key = "key", value = "val", -mir_name) %>%
-  filter(mir_name == "hsa-let-7a-3p") %>%
-  mutate(group = c("e", "e", "e", "m", "m", "m")) %>%
-  ggplot(aes(x = key, y = val, fill = group)) +
-  geom_col() +
-  scale_fill_manual(values = rep(c("red", "blue"), 3)) -> p# use from palettes instead
+# Principal Component Analysis ####
+# PCA plot with ggfortify
+library(ggfortify)
+norm_counts_transposed = data.frame(t(norm_counts[, 2:7]))
+names(norm_counts_transposed) = norm_counts$mir_name
+norm_counts_transposed$cell_type = sub("[123]", "", row.names(norm_counts_transposed))
+pca_residues = prcomp(norm_counts_transposed[, -ncol(norm_counts_transposed)], scale. = TRUE)
+plot(pca_residues$sdev^2/sum(pca_residues$sdev^2), type = "b") # scree plot
+autoplot(pca_residues, data = norm_counts_transposed, colour = "cell_type") 
 
-# Basic pca plot with ggfortify
+# Exercise: Plot a barplot for hsa-miR-372-3p (one bar for each sample; sample name on the x axis and counts on the y axis)
+# hint: scale_fill_brewer(palette = "Set3") # set colours using RColorBrewer palettes
+# hint: scale_fill_manual(values = unique(condition_colours)) # set colours manually
 
 
-
-# interactive graphs with the plotly package
-install.packages("plotly")
+# interactive graphs with the plotly package ####
+# install.packages("plotly")
 library(plotly)
+# bubble plot from owid_covid_newyear
+# Make the plot with ggplot2 first...
+owid_covid = read.csv("Session1/data/owid-covid-data.csv", header = TRUE,
+                      stringsAsFactors = FALSE)
+owid_covid$date = as.Date(owid_covid$date)
+new_year = "2021-01-01"
+owid_covid %>%
+  filter(date == new_year) -> owid_covid_newyear
+library(ggrepel)
+(owid_covid_newyear %>%
+  ggplot(aes(x = total_cases, y = total_deaths, label = location)) +
+    geom_point(aes(fill = continent, size = population), shape = 21) +
+    scale_size(range = c(2, 40)) +
+    scale_x_log10() +
+    scale_y_log10() +
+    geom_label_repel() -> p)
+
+# ...and then use the ggplot2 plot as input for ggplotly()
 ggplotly(p)
-# bubble plot from owid_covid data here
