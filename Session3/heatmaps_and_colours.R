@@ -5,13 +5,13 @@ library(RColorBrewer)
 
 # LOAD and prepare data from files ####
 # we first make a list of filenames of interest using the list.files() function
-filenames = list.files(path = "Session3/data/", pattern = "counts.txt", full.names = TRUE)
+filenames = list.files(path = "Session3/data", pattern = "counts.txt", full.names = TRUE)
 
 # we then use lapply(), which is similar to a for() loop
 # to read the tab separated table of count data
 # so that we get a list of data.frames in count_data_list
 count_data_list = lapply(filenames, function(x) {
-                    sample_name = substr(x, 15, 16)
+                    sample_name = substr(x, 15, 16) # change this to get sample names using regular expression with sub()
                     each_sample_count = read.table(x, header = TRUE, sep = "\t", stringsAsFactors = FALSE,
                                                    col.names = c("mir_name", sample_name))
                     return(each_sample_count)
@@ -86,7 +86,21 @@ norm_counts %>%
     theme_bw() -> p                                           # set theme to B & W
 p
 
+# Plot barplot for miR-21
+norm_counts %>%
+  gather(key = "key", value = "val", -mir_name) %>%
+  filter(mir_name == "hsa-let-7a-3p") %>%
+  mutate(group = c("e", "e", "e", "m", "m", "m")) %>%
+  ggplot(aes(x = key, y = val, fill = group)) +
+  geom_col() +
+  scale_fill_manual(values = rep(c("red", "blue"), 3)) -> p# use from palettes instead
+
+# Basic pca plot with ggfortify
+
+
+
 # interactive graphs with the plotly package
 install.packages("plotly")
 library(plotly)
 ggplotly(p)
+# bubble plot from owid_covid data here
