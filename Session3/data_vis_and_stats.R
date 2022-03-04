@@ -140,3 +140,21 @@ ggplot(cyto_melted, aes(group=Randomisation, y=value, x=cytokine)) +
     position = position_dodge(0.5), show.legend = FALSE) +
   stat_pvalue_manual(stat.test, label = "p.adj.signif", tip.length = 0,hide.ns = TRUE, inherit.aes = FALSE, y.position = 3)
 
+#Create interactive plot
+library(plotly)
+p<-ggplot(cyto_melted, aes(group=Randomisation, y=value, x=cytokine)) +
+  scale_y_log10() +
+  geom_jitter(aes(color=Randomisation),
+              position = position_jitterdodge(jitter.width = 0, dodge.width = 0.5),
+              size = 1.2) + 
+  theme_pubr() +
+  scale_color_manual(values=c("red","blue")) +
+  xlab("") +
+  ylab("Cytokine concentration") +
+  stat_summary(
+    fun.data="mean_sdl",  fun.args = list(mult=1), 
+    geom = "pointrange",  size = 0.4,
+    position = position_dodge(0.5), show.legend = FALSE) +
+  stat_pvalue_manual(stat.test, label = "p.adj.signif", tip.length = 0,hide.ns = TRUE, inherit.aes = FALSE, y.position = 3)
+
+ggplotly(p)
