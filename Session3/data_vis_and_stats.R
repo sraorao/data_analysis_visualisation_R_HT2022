@@ -115,7 +115,6 @@ stat.test <- cyto_melted %>%
   add_significance()
 View(stat.test)
 stat.test <- stat.test %>% add_xy_position(x = "cytokine")
-stat.test$p.adj.signif[which(stat.test$p.adj.signif=="")]<-"ns"
 
 ggplot(cyto_melted, aes(fill=Randomisation, y=value, x=cytokine)) + 
   geom_bar(position="dodge", stat = "summary", fun = "mean") + 
