@@ -35,6 +35,7 @@ cyto_melted<-na.omit(cyto_melted)
 
 #Continue plotting from last session ####
 library(ggplot2)
+#install.packages("ggpubr")
 library(ggpubr)
 #Dot+boxplots
 ggplot(cyto_melted, aes(fill=Randomisation, y=log(value), x=cytokine)) +
@@ -141,6 +142,7 @@ ggplot(cyto_melted, aes(group=Randomisation, y=value, x=cytokine)) +
   stat_pvalue_manual(stat.test, label = "p.adj.signif", tip.length = 0,hide.ns = TRUE, inherit.aes = FALSE, y.position = 3)
 
 #Create interactive plot
+# install.packages("plotly")
 library(plotly)
 p<-ggplot(cyto_melted, aes(group=Randomisation, y=value, x=cytokine)) +
   scale_y_log10() +
